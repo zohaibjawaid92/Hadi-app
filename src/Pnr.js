@@ -5,9 +5,11 @@ import {
   StyleSheet,
   Text,
   Image,
+
   ImageBackground,
   ScrollView,
   TextInput,
+  Switch,
   TouchableOpacity,
   View,
   Dimensions
@@ -23,7 +25,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   screen: {
     paddingTop: Constants.statusBarHeight,
-    // paddingBottom: scaleVertical(24),
+    // paddingBottom: scaleVertical(24),w
     // paddingHorizontal: scale(16),
     flex: 1,
     backgroundColor: "rgb(245, 245, 245)"
@@ -42,11 +44,14 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   header: {
-    display: 'flex',
-    left: 15,
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "center"
+    // flexDirection:'row',
+    // backgroundColor : '#499c89',
+    backgroundColor : '#499c89',
+    flexDirection: 'row', textAlign: 'left', fontSize: 15
+    // left: 15,
+    // marginBottom: 10,
+    // alignItems: "center",
+    // justifyContent: "center"
   },
   all: {
     flex: 1,
@@ -58,6 +63,7 @@ const styles = StyleSheet.create({
   },
   content: {
     justifyContent: "space-between",
+    marginTop : 200,
     paddingHorizontal: 8,
     backgroundColor: "transparent",
     paddingVertical: scaleVertical(12)
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
     marginVertical: scaleVertical(6),
     fontWeight: "bold",
     backgroundColor: '#fbfbfba1',
-    color: 'blue'
+    color: 'blue',
   },
   textRow: {
     flexDirection: "row",
@@ -92,13 +98,13 @@ const styles = StyleSheet.create({
     elevation: 8,
     backgroundColor: "#ffb512",
     marginTop: 25,
-    borderRadius: 10,
+    borderRadius: 17,
     paddingVertical: 10,
     paddingHorizontal: 12
   },
   appButtonText: {
     fontSize: 18,
-    color: "#2448a9",
+    color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase"
@@ -116,21 +122,21 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",
-    textTransform: "uppercase",
-    position: 'absolute', // child
-    top : 15
+    textTransform: "uppercase"
   },
   continueheading: {
     fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
   },
-  icons:{
-    height: 100, width: '40%', resizeMode : 'contain'
+  SwtichStyle : {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 
-class SignUp extends React.PureComponent {
+class Pnr extends React.PureComponent {
   render() {
     const renderIcon = () => (
       <Image
@@ -144,65 +150,22 @@ class SignUp extends React.PureComponent {
         onStartShouldSetResponder={() => true}
         onResponderRelease={() => Keyboard.dismiss()}
       >
-        {/* <View style={styles.container}> */}
-        <ImageBackground source={require('./images/bg.png')} style={styles.backgroundImage}>
-          <View style={styles.all}>
-            <View style={styles.header}>{renderIcon()}</View>
+        <View>
+        <View style={styles.header}>
+            <Image source={require('./images/vector_smart_object.png')} style={{width: 70, height: 40, marginLeft:35,borderRadius:70}} />
+            <Text style={{ alignSelf: "center" , fontWeight : 'bold' , color : 'white' , fontSize : 16 }}>PNR</Text>
+        </View>
+          
             <RkCard style={styles.content}>
               <TextInput
-                textContentType="name"
-                placeholder="NAME"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TextInput
-                textContentType="emailAddress"
-                placeholder="EMAIL"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TextInput
-                textContentType="phone"
-                placeholder="Contact Number"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TextInput
-                textContentType="password"
-                secureTextEntry={true}
-                placeholder="PASSWORD"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TextInput
-                textContentType="password"
-                secureTextEntry={true}
-                placeholder="CONFIRM PASSWORD"
-                placeholderTextColor="#2448a9"
+                textContentType="pnr"
+                placeholder="Enter PNR"
+                placeholderTextColor="#0c0d0e"
                 style={styles.input}
               />
               <TouchableOpacity style={styles.appButtonContainer}>
-                <Text style={styles.appButtonText}>SignUp</Text>
+                <Text style={styles.appButtonText}>Search</Text>
               </TouchableOpacity>
-              <View style={{ marginTop: 15, alignSelf: 'center' }}>
-                <Text style={styles.continueheading}>Continue with</Text>
-              </View>
-              {/* <View style={{ flex: 1, flexDirection: 'column', marginTop: 5 }}> */}
-              <View>
-                <TouchableOpacity style={styles.appSocialContainer}>
-                <Image style={{height : 20 ,resizeMode : 'contain' ,position : 'relative' , left:13 ,marginTop : 8,  right:0}} source={require('./images/fb.png')}></Image>
-                  <Text style={styles.SocialButtonText}>
-                  Facebook</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TouchableOpacity style={styles.appSocialContainer}>
-                <Image style={{height : 20 ,resizeMode : 'contain' ,position : 'relative' , left:0 ,marginTop : 8,  right:50}} source={require('./images/google_icon.png')}></Image>
-                  <Text style={styles.SocialButtonText}>
-                  Google</Text>
-                </TouchableOpacity>
-              </View>
-              {/* </View> */}
             </RkCard>
           </View>
 
@@ -216,12 +179,10 @@ class SignUp extends React.PureComponent {
               style={{ color: "#4A4A4A" }}
             />
           </TouchableOpacity>
-        </ImageBackground>
-        {/* </View> */}
       </RkAvoidKeyboard>
 
     );
   }
 }
 
-export default SignUp;
+export default Pnr;

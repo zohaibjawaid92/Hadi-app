@@ -1,13 +1,15 @@
-import React from "react";
+import React , {useState} from "react";
 import {
   Button,
   Keyboard,
   StyleSheet,
   Text,
   Image,
+
   ImageBackground,
   ScrollView,
   TextInput,
+  Switch,
   TouchableOpacity,
   View,
   Dimensions
@@ -17,6 +19,8 @@ import { RkCard, RkAvoidKeyboard } from "react-native-ui-kitten";
 import { FontAwesome } from "react-native-vector-icons";
 import { scale, scaleVertical } from "./utilities/scale";
 import GradientButton from "react-native-gradient-buttons";
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -42,11 +46,14 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   header: {
-    display: 'flex',
-    left: 15,
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "center"
+    // flexDirection:'row',
+    // backgroundColor : '#499c89',
+    backgroundColor : '#499c89',
+    flexDirection: 'row', textAlign: 'left', fontSize: 15
+    // left: 15,
+    // marginBottom: 10,
+    // alignItems: "center",
+    // justifyContent: "center"
   },
   all: {
     flex: 1,
@@ -59,6 +66,7 @@ const styles = StyleSheet.create({
   content: {
     justifyContent: "space-between",
     paddingHorizontal: 8,
+    marginTop : 100,
     backgroundColor: "transparent",
     paddingVertical: scaleVertical(12)
   },
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
     marginVertical: scaleVertical(6),
     fontWeight: "bold",
     backgroundColor: '#fbfbfba1',
-    color: 'blue'
+    color: 'blue',
   },
   textRow: {
     flexDirection: "row",
@@ -92,13 +100,13 @@ const styles = StyleSheet.create({
     elevation: 8,
     backgroundColor: "#ffb512",
     marginTop: 25,
-    borderRadius: 10,
+    borderRadius: 17,
     paddingVertical: 10,
     paddingHorizontal: 12
   },
   appButtonText: {
     fontSize: 18,
-    color: "#2448a9",
+    color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase"
@@ -116,22 +124,46 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",
-    textTransform: "uppercase",
-    position: 'absolute', // child
-    top : 15
+    textTransform: "uppercase"
   },
   continueheading: {
     fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
   },
-  icons:{
-    height: 100, width: '40%', resizeMode : 'contain'
+  SwtichStyle : {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 
-class SignUp extends React.PureComponent {
-  render() {
+const HotelBooking = (props) => {
+  // render() {
+
+      const [date, setDate] = useState(new Date(1598051730000));
+      const [mode, setMode] = useState('date');
+      const [show, setShow] = useState(false);
+    
+      const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+      };
+    
+      const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
+    
+      const showTimepicker = () => {
+        showMode('time');
+      };
+
     const renderIcon = () => (
       <Image
         style={styles.image}
@@ -144,71 +176,52 @@ class SignUp extends React.PureComponent {
         onStartShouldSetResponder={() => true}
         onResponderRelease={() => Keyboard.dismiss()}
       >
-        {/* <View style={styles.container}> */}
-        <ImageBackground source={require('./images/bg.png')} style={styles.backgroundImage}>
-          <View style={styles.all}>
-            <View style={styles.header}>{renderIcon()}</View>
+        <View>
+        <View style={styles.header}>
+            <Image source={require('./images/vector_smart_object.png')} style={{width: 70, height: 40, marginLeft:35,borderRadius:70}} />
+            <Text style={{ alignSelf: "center" , fontWeight : 'bold' , color : 'white' , fontSize : 16 }}>HOTEL BOOKING</Text>
+        </View>
+          
             <RkCard style={styles.content}>
               <TextInput
-                textContentType="name"
-                placeholder="NAME"
-                placeholderTextColor="#2448a9"
+                textContentType="pickupLocation"
+                placeholder="Around current location"
+                placeholderTextColor="#0c0d0e"
                 style={styles.input}
               />
-              <TextInput
-                textContentType="emailAddress"
-                placeholder="EMAIL"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TextInput
-                textContentType="phone"
-                placeholder="Contact Number"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TextInput
-                textContentType="password"
-                secureTextEntry={true}
-                placeholder="PASSWORD"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TextInput
-                textContentType="password"
-                secureTextEntry={true}
-                placeholder="CONFIRM PASSWORD"
-                placeholderTextColor="#2448a9"
-                style={styles.input}
-              />
-              <TouchableOpacity style={styles.appButtonContainer}>
-                <Text style={styles.appButtonText}>SignUp</Text>
+               <TouchableOpacity onPress={showDatepicker} style={styles.input}>
+                <Text style={{padding:5,fontWeight:'bold'}}>Check-in-date</Text>
               </TouchableOpacity>
-              <View style={{ marginTop: 15, alignSelf: 'center' }}>
-                <Text style={styles.continueheading}>Continue with</Text>
-              </View>
-              {/* <View style={{ flex: 1, flexDirection: 'column', marginTop: 5 }}> */}
-              <View>
-                <TouchableOpacity style={styles.appSocialContainer}>
-                <Image style={{height : 20 ,resizeMode : 'contain' ,position : 'relative' , left:13 ,marginTop : 8,  right:0}} source={require('./images/fb.png')}></Image>
-                  <Text style={styles.SocialButtonText}>
-                  Facebook</Text>
+              <TouchableOpacity onPress={showDatepicker} style={styles.input}>
+                <Text style={{padding:5,fontWeight:'bold'}}>Check-out-date</Text>
+              </TouchableOpacity>
+                {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
+              <View style={{flexDirection : 'row' , flexWrap : 'wrap' , marginTop : 10, justifyContent : 'space-around'}}>
+                <TouchableOpacity style={{padding : 10 ,  backgroundColor : '#e6e9ed' ,borderRadius : 5}}>
+                    <Text>Single Room</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{padding : 10 , backgroundColor : '#e6e9ed' ,borderRadius : 5}}>
+                    <Text>Double Room</Text>
                 </TouchableOpacity>
               </View>
-              <View>
-                <TouchableOpacity style={styles.appSocialContainer}>
-                <Image style={{height : 20 ,resizeMode : 'contain' ,position : 'relative' , left:0 ,marginTop : 8,  right:50}} source={require('./images/google_icon.png')}></Image>
-                  <Text style={styles.SocialButtonText}>
-                  Google</Text>
-                </TouchableOpacity>
-              </View>
-              {/* </View> */}
+              <TouchableOpacity style={styles.appButtonContainer}>
+                <Text style={styles.appButtonText}>Search</Text>
+              </TouchableOpacity>
             </RkCard>
           </View>
 
           <TouchableOpacity
             style={styles.back}
-            onPress={() => this.props.navigation.goBack()}
+            onPress={() => props.navigation.goBack()}
           >
             <FontAwesome
               name="chevron-left"
@@ -216,12 +229,10 @@ class SignUp extends React.PureComponent {
               style={{ color: "#4A4A4A" }}
             />
           </TouchableOpacity>
-        </ImageBackground>
-        {/* </View> */}
       </RkAvoidKeyboard>
 
     );
   }
-}
+// }
 
-export default SignUp;
+export default HotelBooking;

@@ -8,19 +8,21 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Dimensions
 } from "react-native";
 import Constants from "expo-constants";
 import { RkAvoidKeyboard, RkCard } from "react-native-ui-kitten";
 import { FontAwesome } from "react-native-vector-icons";
 import { scale, scaleVertical } from "./utilities/scale";
 import GradientButton from "react-native-gradient-buttons";
-
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   screen: {
     paddingTop: Constants.statusBarHeight,
-    paddingBottom: scaleVertical(24),
-    paddingHorizontal: scale(16),
+    // paddingBottom: scaleVertical(24),
+    // paddingHorizontal: scale(16),
     flex: 1,
     backgroundColor: "rgb(245, 245, 245)"
   },
@@ -31,6 +33,8 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   backgroundImage: {
+    width: windowWidth,
+    height: windowHeight,
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center"
@@ -64,11 +68,11 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 0.5,
     borderColor: "#D3D3D3",
-    borderRadius: 50,
+    borderRadius: 10,
     padding: 10,
     marginVertical: scaleVertical(6),
     fontWeight: "bold",
-    backgroundColor: '#ffff',
+    backgroundColor: '#fbfbfba1',
     color: 'blue'
   },
   OR: {
@@ -107,7 +111,14 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
     fontSize: 18,
-    color: "#fff",
+    color: "#2448a9",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
+  appButtonBottomText: {
+    fontSize: 15,
+    color: "#2448a9",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase"
@@ -115,6 +126,38 @@ const styles = StyleSheet.create({
 });
 
 class SignIn extends React.PureComponent {
+  
+  constructor(props){
+    super(props);
+    this.state= {
+      email : '',
+      pass : '',
+      emailError : ''
+    }
+  }
+  onLogin = () => {
+    this.props.navigation.navigate("HomePage")
+    // var email = this.state.email;
+    // var password = this.state.pass;
+    // // this.props.navigation.navigate("HomePage");
+    // if(email === 'demo@gmail.com' && password === '12345678'){
+    //   alert('Sucess');
+    //   this.props.navigation.navigate("HomePage");
+    // }else{
+    //   alert('Something went wrong');
+    // }
+  }
+
+  emailValidator() {
+    if(this.state.email == ''){
+      this.setState({emailError : "Email cannot be empty"})
+    }
+    else{
+      this.setState({emailError : ""})
+    }
+  }
+
+
   render() {
     const renderIcon = () => (
       <Image
@@ -129,82 +172,48 @@ class SignIn extends React.PureComponent {
         onStartShouldSetResponder={() => true}
         onResponderRelease={() => Keyboard.dismiss()}
       >
-        <View style={styles.container}>
-          <ImageBackground source={require('./images/bg.png')} style={styles.backgroundImage}>
-            <View style={styles.all}>
-              <View style={styles.header}>{renderIcon()}</View>
-              <RkCard rkType="heroImage shadowed" style={styles.content}>
-                <TextInput
-                  textContentType="username"
-                  placeholder="EMAIL OR USERNAME"
-                  placeholderTextColor="#707070"
-                  style={styles.input}
-                />
-                <TextInput
-                  textContentType="password"
-                  secureTextEntry={true}
-                  placeholder="PASSWORD"
-                  placeholderTextColor="#707070"
-                  style={styles.input}
-                />
-                <TouchableOpacity style={styles.appButtonContainer}>
-                  <Text style={styles.appButtonText}>Login</Text>
-                </TouchableOpacity>
-              </RkCard>
-              {/* <View style={{ alignItems: "center" }}>
-            <Text style={styles.OR}>– OR --–</Text>
-          </View> */}
-              {/* <View style={{ paddingHorizontal: 8 }}>
-            <GradientButton
-              style={{ marginTop: 8 }}
-              textStyle={{ fontSize: 20 }}
-              text="SOCIAL LOGIN"
-              height={50}
-              blueMarine
-              impact
-              onPressAction={() => this.props.navigation.navigate("SocialAuth")}
-            />
-          </View> */}
-              <View style={styles.textRow}>
-                <Text style={{ color: "#fff", fontSize: 15, marginTop: 5 }}>
-                  Don&rsquo;t have an account?
-            </Text>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("SignUp")} style={styles.appButtonContainerSignup}>
-                  <Text style={styles.appButtonText}>Signup</Text>
-                </TouchableOpacity>
-                {/* <Button style={{ backgroundColor: "transparent" }}
-                  title="Sign up now."
-                  onPress={() => this.props.navigation.navigate("SignUp")}
-                /> */}
-              </View>
-            </View>
-
-            {/* <View style={styles.footer}> */}
-            {/* <View style={styles.textRow}>
-            <Text style={{ color: "#484848", fontSize: 18, marginTop: 8 }}>
-              Forgot your password?
-            </Text>
-            <Button
-              title="Reset Password."
-              onPress={() => this.props.navigation.navigate("ForgotPassword")}
-            />
-          </View> */}
-            {/* <View style={styles.textRow}>
-              <Text style={{ color: "#484848", fontSize: 18, marginTop: 2 }}>
+        {/* <View style={styles.container}> */}
+        <ImageBackground source={require('./images/bg.png')} style={styles.backgroundImage}>
+          <View style={styles.all}>
+            <View style={styles.header}>{renderIcon()}</View>
+            <RkCard rkType="heroImage shadowed" style={styles.content}>
+              <TextInput
+                textContentType="username"
+                placeholder="EMAIL OR USERNAME"
+                placeholderTextColor="#2448a9"
+                style={styles.input}
+                onChangeText={(value) => this.setState({email: value})}
+                value={this.state.email}
+                onBlur = {() => this.emailValidator}
+              />
+              <Text style={{color : 'red' , marginLeft : 20}}>{this.state.emailError}</Text>
+              <TextInput
+                textContentType="password"
+                secureTextEntry={true}
+                placeholder="PASSWORD"
+                placeholderTextColor="#2448a9"
+                style={styles.input}
+                onChangeText={(value) => this.setState({pass: value})}
+                value={this.state.pass}
+              />
+              <TouchableOpacity onPress={this.onLogin} style={styles.appButtonContainer}>
+                <Text style={styles.appButtonText}>Login</Text>
+              </TouchableOpacity>
+            </RkCard>
+            <View style={styles.textRow}>
+              <Text style={{ color: "#fff", fontSize: 15, marginTop: 5 }}>
                 Don&rsquo;t have an account?
             </Text>
-              <Button style={{ backgroundColor: 'transparent' }}
-                title="Sign up now."
-                onPress={() => this.props.navigation.navigate("SignUp")}
-              />
-            </View> */}
-            {/* </View> */}
-
-            <TouchableOpacity style={styles.close}>
-              <FontAwesome name="times" size={36} style={{ color: "#4A4A4A" }} />
-            </TouchableOpacity>
-          </ImageBackground>
-        </View>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("SignUp")} style={styles.appButtonContainerSignup}>
+                <Text style={styles.appButtonBottomText}>Signup</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.close}>
+            <FontAwesome name="times" size={36} style={{ color: "#4A4A4A" }} />
+          </TouchableOpacity>
+        </ImageBackground>
+        {/* </View> */}
       </RkAvoidKeyboard>
     );
   }
